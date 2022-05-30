@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="UnattendedHostPersistenceState">
+    <option name="openedFilesInfos">
+      <list>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="152" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/index.php" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="64" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/backend/dao/UrlRepositoryImpl.php" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="2273" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/backend/login/discord.php" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="339" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/backend/pdo/fn.php" />
+        </OpenedFileInfo>
+      </list>
+    </option>
+  </component>
+</project>
