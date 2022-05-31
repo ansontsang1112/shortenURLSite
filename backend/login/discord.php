@@ -9,9 +9,6 @@ ini_set('display_startup_errors', 1);
 ini_set('max_execution_time', 300);
 error_reporting(E_ALL);
 
-const OAUTH2_CLIENT_ID = '977981235618021377';
-const OAUTH2_CLIENT_SECRET = 'wFQjXV7UQqS4Jx55UFhDVfRuv169Uu4j';
-
 $authorizeURL = 'https://discord.com/api/oauth2/authorize';
 $tokenURL = 'https://discord.com/api/oauth2/token';
 $apiURLBase = 'https://discord.com/api/users/@me';
