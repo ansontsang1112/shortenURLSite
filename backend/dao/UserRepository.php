@@ -10,4 +10,6 @@ interface UserRepository
     public function isUserExistByMemberID($memberID);
     public function getUserProfileByDiscordID($discordID);
     public function getUserProfileByMember($memberID);
+
+    public function isMemberLinked($uid);
 }

@@ -60,10 +60,12 @@ if (session('access_token')) {
         $userObject->setDiscordID($user->id);
         $uid = $userObject->getUid();
         $_SESSION['uid'] = $impl->createUser($userObject);
+        $_SESSION['isLinkedMember'] = false;
     } else {
         $userObj = $impl->getUserProfileByDiscordID($user->id);
         $uid = $userObj->getUid();
         $_SESSION['uid'] = $userObj->getUid();
+        $_SESSION['isLinkedMember'] = $impl->isMemberLinked($uid);
     }
 
     $_SESSION['url_list'] = $urlImpl->getUrlObjectByUser($uid);
@@ -83,6 +85,7 @@ if (get('action') == 'logout') {
   unset($_SESSION['access_token']);
   unset($_SESSION['method']);
   unset($_SESSION['userObject']);
+  unset($_SESSION['isLinkedMember']);
   $_SESSION['isLogin'] = false;
 
   header('Location: ../../index.php?logout');

@@ -18,7 +18,7 @@ if($_SESSION['isLogin']) {
             $user = $impl->getUserProfileByDiscordID($_SESSION['userObject']->id);
             break;
         case "member":
-            $user = $impl->getUserProfileByMember(null);
+            $user = unserialize($_SESSION['userObject']);
             break;
     }
 }
@@ -38,14 +38,16 @@ if($title == "Fail") {
 }
 
 // Check if repeated
-if(isRepeated($url)) {
-    header("Location: ../index.php?s=" . getShortenURL(shorturl($url)));
-} else {
-    $key = shorturl($url);
-    $value_array = array("userid" => $userid, "ip" => $ip, "clicks" => $default_click, "timestamp" => $timestamp, "title" => $title, "url" => $url, "status" => "active");
+$key = shorturl($url);
 
-    // Redis Operation
-	$GLOBALS['redis']->hMset($key, $value_array);
-
-    header("Location: ../../index.php?s=" . $key);
+// If key exist
+if($GLOBALS['redis']->exists($key)) {
+    $key = generateRandomString();
 }
+
+$value_array = array("userid" => $userid, "ip" => $ip, "clicks" => $default_click, "timestamp" => $timestamp, "title" => $title, "url" => $url, "status" => "active");
+
+// Redis Operation
+$GLOBALS['redis']->hMset($key, $value_array);
+
+header("Location: ../../index.php?s=" . $key);

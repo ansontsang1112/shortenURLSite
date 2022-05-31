@@ -44,7 +44,7 @@ class UserRepositoryImpl implements UserRepository
         $statement = "SELECT uid FROM user_info WHERE discord_id = $discordID";
 
         if($GLOBALS['udb']->query($statement)->num_rows > 0) {
-            return ture;
+            return true;
         } else {
             return false;
         }
@@ -95,6 +95,17 @@ class UserRepositoryImpl implements UserRepository
 
         if($GLOBALS['udb']->query($statement)->num_rows != 0) {
             return true;
+        }
+        return false;
+    }
+
+    public function isMemberLinked($uid): bool
+    {
+        // TODO: Implement isMemberLinked() method.
+        $statement = "SELECT * FROM user_info WHERE uid = '$uid'";
+        if($GLOBALS['udb']->query($statement)->num_rows > 0) {
+            if($GLOBALS['udb']->query($statement)->fetch_assoc()['member_id'] != "N/A") return true;
+            return false;
         }
         return false;
     }

@@ -25,37 +25,40 @@ if($_GET['action'] == "login") {
             $userImpl = new UserRepositoryImpl();
             $urlImpl = new UrlRepositoryImpl();
 
-            if(!$userImpl->isUserExistByMemberID($result['member_id'])) {
-                $user = new User($result['username'], $result['email'], time(), 'Active', false);
-                $user->setMemberID($result['member_id']);
+            $memberId = $result['member_id'];
 
-                $uid = $user->getUid();
-                $_SESSION['userObject'] = serialize($user);
-                $_SESSION['uid'] = $userImpl->createUser($user);
+            if($GLOBALS['udb']->query("SELECT * FROM user_info WHERE member_id = '$memberId'")->num_rows > 0) {
+                $url = "../../index.php?login_err=migrated";
             } else {
-                $userObj = $userImpl->getUserProfileByMember($result['member_id']);
-                $uid = $userObj->getUid();
+                if(!$userImpl->isUserExistByMemberID($result['member_id'])) {
+                    $user = new User($result['username'], $result['email'], time(), 'Active', false);
+                    $user->setMemberID($result['member_id']);
 
-                $_SESSION['userObject'] = serialize($userObj);
-                $_SESSION['uid'] = $userObj->getUid();
+                    $uid = $user->getUid();
+                    $_SESSION['userObject'] = serialize($user);
+                    $_SESSION['uid'] = $userImpl->createUser($user);
+                } else {
+                    $userObj = $userImpl->getUserProfileByMember($result['member_id']);
+                    $uid = $userObj->getUid();
+
+                    $_SESSION['userObject'] = serialize($userObj);
+                    $_SESSION['uid'] = $userObj->getUid();
+                }
+
+                $_SESSION['url_list'] = $urlImpl->getUrlObjectByUser($uid);
+
+                $_SESSION['method'] = "member";
+                $_SESSION['isLogin'] = true;
+                $url = "../../index.php";
             }
-
-            $_SESSION['url_list'] = $urlImpl->getUrlObjectByUser($uid);
-
-            var_dump($_SESSION['userObject']);
-
-            $_SESSION['method'] = "member";
-            $_SESSION['isLogin'] = true;
-
-            $url = "../../index.php";
         } else {
             $url = "../../index.php?login_err=fail_login";
         }
     } else {
-        $url = "../../index.php?login_err=fail";
+        $url = "../../index.php?login_err=fail_login";
     }
 
-    //header("Location: " . $url);
+    header("Location: " . $url);
 }
 
 if($_GET['action'] == "logout") {

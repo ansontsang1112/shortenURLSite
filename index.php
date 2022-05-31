@@ -41,6 +41,7 @@ if ($isLogin) {
   <!-- Vendor CSS Files -->
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
   <!-- Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
@@ -135,7 +136,7 @@ if ($isLogin) {
 
         <div class="row">
 
-          <div class="col-lg-5 d-flex align-items-stretch">
+          <div class="col-lg-4 d-flex align-items-stretch">
             <div class="info">
               <?php if (!$_SESSION['isLogin']) { ?>
                   <?php
@@ -145,6 +146,10 @@ if ($isLogin) {
                       <div class="alert alert-danger" role="alert">
                           帳號或密碼錯誤，請再嘗試。
                       </div>
+                  <?php } else { ?>
+                          <div class="alert alert-warning" role="alert">
+                              你的帳號已經轉移並合併到 Discord 系統當中。請使用 Discord 登入。
+                          </div>
                   <?php }
                   }?>
                 <form action="backend/login/member.php?action=login" method="post">
@@ -176,6 +181,13 @@ if ($isLogin) {
                       <span style="color:black">登入名稱：<?php echo $user->username . "#" . $user->discriminator; ?><br>電郵：<?php echo $user->email; ?></span>
                     </div>
                   </div>
+                      <?php if(!$_SESSION['isLinkedMember']) { ?>
+                      <hr>
+                      <div class="card" style="background-color: rgba(255, 255, 255, 0)">
+                          <button type="button" onclick="window.open('migrate.php','targetWindow','toolbar=no,location=no,status=no,menubar=no,scrollbars=yes,resizable=yes,width=700,height=900'); return false;" style="color: white" class="btn btn-outline-dark">連結會員帳號<br>Link Member Account</button>
+                      </div>
+                      <small>請注意：若果您曾經使用會員帳號登入，連結後將不能再使用會員帳號作登入。並且曾經建立的短網址亦會遷移到本帳號當中。</small>
+                      <?php } ?>
                 <?php } else {
                       $user = unserialize($_SESSION['userObject']);?>
                       <div class="alert alert-info" role="alert">
@@ -191,7 +203,7 @@ if ($isLogin) {
             </div>
           </div>
 
-          <div class="col-lg-7 mt-5 mt-lg-0 d-flex align-items-stretch">
+          <div class="col-lg-8 mt-5 mt-lg-0 d-flex align-items-stretch">
             <?php
             if (!$isLogin) {
             ?>
@@ -245,6 +257,7 @@ if ($isLogin) {
                             <th scope="col">短網址</th>
                             <th scope="col">標題</th>
                             <th scope="col">創建時間</th>
+                            <th scope="col">@</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -255,6 +268,7 @@ if ($isLogin) {
                               <th scope="row"><a href="https://l.ttfmc.net/<?php echo $key; ?>" target="_blank"><?php echo $key; ?></a></th>
                               <td id="<?php echo $key ?>_title"><?php echo $value['title'] ?></td>
                               <td><?php echo date('d/m/Y H:i', $value['timestamp']); ?></td>
+                                <td><a href="backend/pdo/user_actions.php?remove&code=<?php echo $key; ?>"><i class="fa fa-times" style="color:red" title="移除短網址" aria-hidden="true"></i></a></td>
                             </tr>
                           <?php } ?>
                         </tbody>
